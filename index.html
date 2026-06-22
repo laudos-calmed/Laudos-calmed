@@ -1478,11 +1478,17 @@ tbody tr:hover td{background:rgba(29,37,83,.025)}
 
       <!-- SEÇÃO: Documentos anexados -->
       <div style="font-weight:700;font-size:12px;text-transform:uppercase;color:var(--gray);margin-bottom:8px;padding-bottom:4px;border-bottom:1px solid var(--gray-border)">Documentos anexados</div>
-      <div id="el-anexos-lista" style="display:flex;flex-direction:column;gap:6px;margin-bottom:8px"></div>
-      <div style="display:flex;gap:8px">
-        <input class="form-control" type="text" id="el-novo-anexo" placeholder="Nome do documento (ex: ART 12345)" style="flex:1">
-        <button class="btn btn-primary btn-sm" onclick="elAddAnexo()">+ Adicionar</button>
+      <div id="el-anexos-lista" style="display:flex;flex-direction:column;gap:6px;margin-bottom:10px"></div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:6px">
+        <label class="btn btn-primary btn-sm" style="cursor:pointer;margin:0">
+          📁 Selecionar arquivo
+          <input type="file" id="el-attach-file-input" accept=".pdf,.png,.jpg,.jpeg" style="display:none" onchange="elAddAttachFile(this)">
+        </label>
+        <span style="font-size:12px;color:var(--gray)">ou</span>
+        <input class="form-control" type="text" id="el-novo-anexo" placeholder="Nome como referência (ex: ART 12345)" style="flex:1;min-width:160px">
+        <button class="btn btn-sm" style="white-space:nowrap" onclick="elAddAnexo()">+ Adicionar</button>
       </div>
+      <div style="font-size:11px;color:var(--gray)">Formatos aceitos: PDF, PNG, JPG — incorporados ao PDF final</div>
 
     </div>
     <div class="modal-footer" style="position:sticky;bottom:0;background:#fff;z-index:2">
@@ -3193,6 +3199,7 @@ async function salvarESolicitar() {
 // ═══════════════════════════════════════════════════════════
 // ── Variáveis de estado do modal de edição ──
 let _elAnexos = [];
+let _elArquivosAnexos = [];
 
 function editarLaudo(id) {
   const l = CACHE.laudos.find(x => x.id === id);
@@ -3200,6 +3207,7 @@ function editarLaudo(id) {
 
   editandoLaudoId = id;
   _elAnexos = l.anexos ? [...l.anexos] : [];
+  _elArquivosAnexos = []; // arquivos só existem em memória, não vêm do Firestore
 
   // Número do laudo no título
   document.getElementById('edit-laudo-numero').textContent = l.numero || '';
@@ -3296,13 +3304,32 @@ function elCalcMedia(i) {
 function elRenderAnexos() {
   const lista = document.getElementById('el-anexos-lista');
   if (!lista) return;
-  lista.innerHTML = _elAnexos.length
-    ? _elAnexos.map((a, i) => `
-      <div style="display:flex;align-items:center;gap:8px;padding:6px 10px;background:var(--body-bg);border:1px solid var(--gray-border);border-radius:6px;font-size:13px">
-        <span style="flex:1">📎 ${a}</span>
-        <button class="btn btn-icon btn-sm" style="color:var(--danger,#dc3545)" onclick="_elAnexos.splice(${i},1);elRenderAnexos()">✕</button>
-      </div>`).join('')
-    : '<div style="font-size:13px;color:var(--gray)">Nenhum documento anexado.</div>';
+  const arquivosNomes = (_elArquivosAnexos||[]).map(a => a.nome);
+  const soTexto = _elAnexos.filter(n => !arquivosNomes.includes(n));
+  const itensTexto = soTexto.map((a, i) => {
+    const idxReal = _elAnexos.indexOf(a);
+    return `<div style="display:flex;align-items:center;gap:8px;padding:6px 10px;background:var(--body-bg);border:1px solid var(--gray-border);border-radius:6px;font-size:13px">
+      <span style="flex:1">📄 ${a} <span style="font-size:10px;color:var(--gray)">(referência)</span></span>
+      <button class="btn btn-icon btn-sm" style="color:var(--danger,#dc3545)" onclick="_elAnexos.splice(${idxReal},1);elRenderAnexos()">✕</button>
+    </div>`;
+  });
+  const itensArq = (_elArquivosAnexos||[]).map((a, i) => {
+    const icone = a.tipo && a.tipo.startsWith('image') ? '🖼️' : '📑';
+    return `<div style="display:flex;align-items:center;gap:8px;padding:6px 10px;background:var(--body-bg);border:1px solid var(--gray-border);border-radius:6px;font-size:13px">
+      <span style="flex:1">${icone} ${a.nome} <span style="font-size:10px;color:var(--accent)">(incorporado ao PDF)</span></span>
+      <button class="btn btn-icon btn-sm" style="color:var(--danger,#dc3545)" onclick="elRemoveArquivo(${i})">✕</button>
+    </div>`;
+  });
+  const tudo = [...itensTexto, ...itensArq].join('');
+  lista.innerHTML = tudo || '<div style="font-size:13px;color:var(--gray)">Nenhum documento anexado.</div>';
+}
+
+function elRemoveArquivo(i) {
+  const nome = _elArquivosAnexos[i].nome;
+  _elArquivosAnexos.splice(i, 1);
+  const idxRef = _elAnexos.indexOf(nome);
+  if (idxRef >= 0) _elAnexos.splice(idxRef, 1);
+  elRenderAnexos();
 }
 
 function elAddAnexo() {
@@ -3312,6 +3339,21 @@ function elAddAnexo() {
   _elAnexos.push(val);
   inp.value = '';
   elRenderAnexos();
+}
+
+function elAddAttachFile(input) {
+  const file = input.files[0];
+  if (!file) return;
+  if (file.size > 5 * 1024 * 1024) { alert('Arquivo muito grande. Limite: 5MB.'); input.value=''; return; }
+  const reader = new FileReader();
+  reader.onload = function(e) {
+    _elArquivosAnexos = _elArquivosAnexos || [];
+    _elArquivosAnexos.push({ nome: file.name, tipo: file.type, base64: e.target.result });
+    if (!_elAnexos.includes(file.name)) _elAnexos.push(file.name);
+    input.value = '';
+    elRenderAnexos();
+  };
+  reader.readAsDataURL(file);
 }
 
 async function salvarEdicaoLaudo() {
@@ -3408,11 +3450,17 @@ async function salvarEdicaoLaudo() {
     const idx = CACHE.laudos.findIndex(x => x.id === editandoLaudoId);
     if (idx >= 0) CACHE.laudos[idx] = { ...laudoOriginal, ...updates };
 
+    const laudoIdSalvo = editandoLaudoId;
+    const arquivosParaPDF = [..._elArquivosAnexos];
+
     closeModal('modal-editar-laudo');
     editandoLaudoId = null;
     renderLaudos();
     renderDashboard();
-    alert('✅ Laudo atualizado com sucesso!');
+
+    if (confirm('✅ Laudo atualizado!\n\nDeseja baixar o PDF agora?')) {
+      gerarPDF(laudoIdSalvo, arquivosParaPDF);
+    }
   } catch(e) {
     console.error('Erro ao salvar edição:', e);
     alert('Erro ao salvar: ' + e.message);
