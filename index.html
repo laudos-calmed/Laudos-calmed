@@ -43,8 +43,6 @@
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
-<!-- Firebase App Check -->
-<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-check-compat.js"></script>
 <script>
   const firebaseConfig = {
     apiKey: "AIzaSyAqQuxVL4cifDNK-Orj_bpMoxR7p7AeFbw",
@@ -60,20 +58,6 @@
   } else {
     try {
       firebase.initializeApp(firebaseConfig);
-
-      // ── App Check com reCAPTCHA v3 ──
-      // Só ativa se não for localhost (evita erro em dev)
-      try {
-        const appCheck = firebase.appCheck();
-        appCheck.activate(
-          new firebase.appCheck.ReCaptchaV3Provider('6LfBiS4tAAAAABNAav_Uhps1j4YnZiqZfKWE-Op'),
-          true
-        );
-      } catch(acErr) {
-        console.warn('App Check não inicializado:', acErr.message);
-        // Não bloqueia o sistema se App Check falhar
-      }
-
       window._auth = firebase.auth();
       window._db   = firebase.firestore();
     } catch(e) {
