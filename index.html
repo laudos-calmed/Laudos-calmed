@@ -4,14 +4,47 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Calmed+ — Sistema de Laudos de Qualificação Térmica</title>
+<!-- SEGURANÇA: headers via meta -->
+<meta http-equiv="X-Content-Type-Options" content="nosniff">
+<meta http-equiv="X-Frame-Options" content="DENY">
+<meta http-equiv="Referrer-Policy" content="strict-origin-when-cross-origin">
+<meta http-equiv="Content-Security-Policy" content="
+  default-src 'self';
+  script-src 'self' 'unsafe-inline'
+    https://cdnjs.cloudflare.com
+    https://www.gstatic.com
+    https://apis.google.com
+    https://www.google.com
+    https://www.recaptcha.net;
+  style-src 'self' 'unsafe-inline'
+    https://fonts.googleapis.com
+    https://fonts.gstatic.com;
+  font-src 'self'
+    https://fonts.gstatic.com;
+  connect-src 'self'
+    https://*.googleapis.com
+    https://*.firebaseio.com
+    https://*.firebaseapp.com
+    https://identitytoolkit.googleapis.com
+    https://securetoken.googleapis.com
+    https://firebaseappcheck.googleapis.com;
+  img-src 'self' data: blob:
+    https://www.gstatic.com;
+  frame-src
+    https://www.google.com
+    https://www.recaptcha.net;
+  object-src 'none';
+">
 <link rel="icon" type="image/png" href="data:image/png;base64,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">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js"></script>
 
-<!-- Firebase SDK v9 compat — funciona direto no navegador sem servidor -->
+<!-- Firebase SDK v9 compat -->
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+<!-- Firebase App Check -->
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-check-compat.js"></script>
 <script>
   const firebaseConfig = {
     apiKey: "AIzaSyAqQuxVL4cifDNK-Orj_bpMoxR7p7AeFbw",
@@ -22,12 +55,25 @@
     appId: "1:112137806919:web:7d09f6f1c21b5a678a7d62"
   };
 
-  // Verifica se o SDK do Firebase carregou
   if (typeof firebase === 'undefined') {
     window._firebaseFailed = true;
   } else {
     try {
       firebase.initializeApp(firebaseConfig);
+
+      // ── App Check com reCAPTCHA v3 ──
+      // Só ativa se não for localhost (evita erro em dev)
+      try {
+        const appCheck = firebase.appCheck();
+        appCheck.activate(
+          new firebase.appCheck.ReCaptchaV3Provider('6LfBiS4tAAAAABNAav_Uhps1j4YnZiqZfKWE-Op'),
+          true
+        );
+      } catch(acErr) {
+        console.warn('App Check não inicializado:', acErr.message);
+        // Não bloqueia o sistema se App Check falhar
+      }
+
       window._auth = firebase.auth();
       window._db   = firebase.firestore();
     } catch(e) {
@@ -665,7 +711,7 @@ tbody tr:hover td{background:rgba(29,37,83,.025)}
           </div>
           <div style="display:flex;gap:8px;align-items:center">
             <input class="form-control" id="busca-clientes" placeholder="🔍 Buscar cliente..." style="width:220px" oninput="renderClientes()">
-            <button class="btn btn-primary btn-sm" onclick="openModalCliente()">➕ Novo cliente</button>
+            <button class="btn btn-primary btn-sm" id="btn-novo-cliente" onclick="openModalCliente()">➕ Novo cliente</button>
           </div>
         </div>
         <div class="card-body" style="padding:0">
@@ -694,7 +740,7 @@ tbody tr:hover td{background:rgba(29,37,83,.025)}
             <select class="form-control" id="filtro-local-cliente" style="width:200px" onchange="renderLocais()">
               <option value="">Todos os clientes</option>
             </select>
-            <button class="btn btn-primary btn-sm" onclick="openModalLocal()">➕ Novo local</button>
+            <button class="btn btn-primary btn-sm" id="btn-novo-local" onclick="openModalLocal()">➕ Novo local</button>
           </div>
         </div>
         <div class="card-body" style="padding:0">
@@ -738,7 +784,7 @@ tbody tr:hover td{background:rgba(29,37,83,.025)}
               <option value="estabilidade">Estabilidade</option>
               <option value="custom">Personalizado</option>
             </select>
-            <button class="btn btn-primary btn-sm" onclick="openModalEquipamento()">➕ Novo equipamento</button>
+            <button class="btn btn-primary btn-sm" id="btn-novo-equip" onclick="openModalEquipamento()">➕ Novo equipamento</button>
           </div>
         </div>
         <div class="card-body" style="padding:0">
@@ -795,7 +841,7 @@ tbody tr:hover td{background:rgba(29,37,83,.025)}
       <div class="card">
         <div class="card-header">
           <div class="card-title">Técnicos cadastrados</div>
-          <button class="btn btn-primary btn-sm" onclick="openModalTecnico()">➕ Novo técnico</button>
+          <button class="btn btn-primary btn-sm" id="btn-novo-tecnico" onclick="openModalTecnico()">➕ Novo técnico</button>
         </div>
         <div class="card-body" style="padding:0">
           <div class="table-wrap">
@@ -1133,7 +1179,7 @@ tbody tr:hover td{background:rgba(29,37,83,.025)}
           <h2 class="page-title">Módulos Aquisitores</h2>
           <p style="color:var(--text-secondary);font-size:13px;margin:2px 0 0">Data loggers de temperatura utilizados nas qualificações</p>
         </div>
-        <button class="btn btn-primary" onclick="openModalModulo()">＋ Novo módulo</button>
+        <button class="btn btn-primary" id="btn-novo-modulo" onclick="openModalModulo()">＋ Novo módulo</button>
       </div>
 
       <div class="alert alert-info" style="margin-bottom:16px">
@@ -1636,26 +1682,45 @@ function initApp() {
       // Carrega perfil do usuário do Firestore
       try {
         const profSnap = await fb.getDoc(fb.doc(db, 'usuarios', user.uid));
-        if (profSnap.exists && (typeof profSnap.exists === 'function' ? profSnap.exists() : profSnap.exists)) {
+        const exists = typeof profSnap.exists === 'function' ? profSnap.exists() : profSnap.exists;
+        if (exists) {
           currentUserProfile = { uid: user.uid, ...profSnap.data() };
         } else {
-          // Fallback: primeiro usuário ou email calmed = admin
-          currentUserProfile = { uid: user.uid, role: 'admin', nome: user.email.split('@')[0], email: user.email };
+          // Sem perfil cadastrado — NEGA acesso por segurança
+          // Exceção: admin@calmed.com.br é sempre admin (conta raiz)
+          if (user.email === 'admin@calmed.com.br') {
+            currentUserProfile = { uid: user.uid, perfil: 'admin', role: 'admin', nome: 'Administrador', email: user.email };
+            secLog('login_sem_perfil_admin_raiz', { email: user.email });
+          } else {
+            secLog('login_negado_sem_perfil', { email: user.email });
+            await fb.signOut(auth);
+            document.getElementById('login-screen').classList.remove('hidden');
+            document.getElementById('login-alert').innerHTML =
+              '<div class="alert alert-danger">⚠️ Usuário sem perfil cadastrado. Solicite acesso ao administrador.</div>';
+            return;
+          }
         }
       } catch(e) {
-        currentUserProfile = { uid: user.uid, role: 'admin', nome: user.email.split('@')[0], email: user.email };
+        // Erro ao buscar perfil — NEGA acesso por segurança (fail-closed)
+        secLog('login_negado_erro_perfil', { erro: e.code || 'desconhecido' });
+        await fb.signOut(auth);
+        document.getElementById('login-screen').classList.remove('hidden');
+        document.getElementById('login-alert').innerHTML =
+          '<div class="alert alert-danger">⚠️ Erro ao verificar permissões. Tente novamente.</div>';
+        return;
       }
       document.getElementById('login-screen').classList.add('hidden');
       document.getElementById('app-root').classList.remove('hidden');
       const nomeEl = document.getElementById('sidebar-user-name');
       if (nomeEl) nomeEl.textContent = currentUserProfile.nome || user.email.split('@')[0];
       document.getElementById('sidebar-user-email').textContent = user.email;
-      // Mostrar/ocultar itens de ADM
       applyRoleUI();
       await loadAllData();
       navigate('dashboard');
+      secLog('login_ok', { perfil: currentUserProfile.perfil || currentUserProfile.role });
     } else {
       currentUser = null;
+      currentUserProfile = null;
       document.getElementById('app-root').classList.add('hidden');
       document.getElementById('login-screen').classList.remove('hidden');
     }
@@ -1697,8 +1762,20 @@ function doLogin() {
   const btn = document.getElementById('login-btn');
   alertBox.innerHTML = '';
 
+  // Verificar bloqueio por brute force
+  const bloqueio = loginBloqueado();
+  if (bloqueio) {
+    alertBox.innerHTML = `<div class="alert alert-danger">🔒 ${escHtml(bloqueio)}</div>`;
+    return;
+  }
+
   if (!email || !senha) {
     alertBox.innerHTML = '<div class="alert alert-danger">⚠️ Informe e-mail e senha.</div>';
+    return;
+  }
+
+  if (!isValidEmail(email)) {
+    alertBox.innerHTML = '<div class="alert alert-danger">⚠️ E-mail inválido.</div>';
     return;
   }
 
@@ -1706,16 +1783,16 @@ function doLogin() {
   btn.textContent = 'Entrando...';
 
   fb.signInWithEmailAndPassword(auth, email, senha)
+    .then(() => {
+      registrarLoginSucesso();
+    })
     .catch((err) => {
-      let msg = 'Erro ao entrar. Verifique e-mail e senha.';
-      if (err.code === 'auth/invalid-credential' || err.code === 'auth/wrong-password' || err.code === 'auth/user-not-found') {
-        msg = '❌ E-mail ou senha incorretos.';
-      } else if (err.code === 'auth/invalid-email') {
-        msg = '❌ E-mail inválido.';
-      } else if (err.code === 'auth/too-many-requests') {
-        msg = '❌ Muitas tentativas. Aguarde um momento e tente novamente.';
-      }
-      alertBox.innerHTML = `<div class="alert alert-danger">${msg}</div>`;
+      registrarFalhaLogin();
+      const msg = erroSeguro(err, 'doLogin');
+      const restante = _loginAttempts.count < MAX_LOGIN_ATTEMPTS
+        ? ` (tentativa ${_loginAttempts.count}/${MAX_LOGIN_ATTEMPTS})`
+        : '';
+      alertBox.innerHTML = `<div class="alert alert-danger">❌ ${escHtml(msg)}${restante}</div>`;
     })
     .finally(() => {
       btn.disabled = false;
@@ -1736,6 +1813,8 @@ function doLogout() {
 
 function applyRoleUI() {
   const admin = isAdmin();
+
+  // Itens de menu exclusivos do admin
   ['nav-usuarios','nav-tecnicos','nav-modulos'].forEach(id => {
     const el = document.getElementById(id);
     if (el) el.style.display = admin ? '' : 'none';
@@ -1900,12 +1979,12 @@ function renderDashboard() {
   }
   tbody.innerHTML = recent.map(l => `
     <tr>
-      <td data-label="Nº"><strong>${l.numero}</strong></td>
-      <td data-label="Cliente">${l.clienteNome}</td>
-      <td data-label="Equipamento">${l.modelo} · ${l.serie}</td>
-      <td data-label="Data">${fmtData(l.dataVerif)}</td>
+      <td data-label="Nº"><strong>${escHtml(l.numero)}</strong></td>
+      <td data-label="Cliente">${escHtml(l.clienteNome)}</td>
+      <td data-label="Equipamento">${escHtml(l.modelo)} · ${escHtml(l.serie)}</td>
+      <td data-label="Data">${escHtml(fmtData(l.dataVerif))}</td>
       <td data-label="Resultado">${l.aprovado ? '<span class="badge badge-ok">✓ Aprovado</span>' : '<span class="badge badge-fail">✗ Reprovado</span>'}</td>
-      <td><button class="btn btn-sm" onclick="verLaudo('${l.id}')">👁 Ver</button></td>
+      <td><button class="btn btn-sm" onclick="verLaudo('${escHtml(l.id)}')">👁 Ver</button></td>
     </tr>
   `).join('');
 }
@@ -1932,23 +2011,23 @@ function renderClientes() {
     <tr>
       <td data-label="Nome / Contato">
         <div style="text-align:right">
-        <strong>${c.nome}</strong>
-        ${c.contato ? '<br><small style="color:var(--text-secondary)">'+c.contato+'</small>' : ''}
-        ${c.telefone ? '<br><small style="color:var(--text-secondary)">📞 '+c.telefone+'</small>' : ''}
+        <strong>${escHtml(c.nome)}</strong>
+        ${c.contato ? '<br><small style="color:var(--text-secondary)">'+escHtml(c.contato)+'</small>' : ''}
+        ${c.telefone ? '<br><small style="color:var(--text-secondary)">📞 '+escHtml(c.telefone)+'</small>' : ''}
         </div>
       </td>
-      <td data-label="Endereço">${c.endereco || '—'}</td>
-      <td data-label="CNPJ">${c.cnpj || '—'}</td>
+      <td data-label="Endereço">${escHtml(c.endereco) || '—'}</td>
+      <td data-label="CNPJ">${escHtml(c.cnpj) || '—'}</td>
       <td data-label="Locais / Equips.">
-        <span class="badge badge-info" style="cursor:pointer" onclick="filtrarLocaisPorCliente('${c.id}')" title="Ver locais deste cliente">
+        <span class="badge badge-info" style="cursor:pointer" onclick="filtrarLocaisPorCliente('${escHtml(c.id)}')" title="Ver locais deste cliente">
           ${nLocais} local${nLocais!==1?'is':''}
         </span>
         <span class="badge badge-neutral" style="margin-left:4px">${nEqs} equip.</span>
       </td>
       <td style="white-space:nowrap">
         <button class="btn btn-sm" onclick="filtrarLocaisPorCliente('${c.id}')" title="Gerenciar locais">🏢 Locais</button>
-        <button class="btn btn-sm btn-icon" onclick="editCliente('${c.id}')" title="Editar">✏️</button>
-        <button class="btn btn-sm btn-icon" onclick="delCliente('${c.id}')" title="Excluir">🗑</button>
+        ${isAdmin() ? `<button class="btn btn-sm btn-icon" onclick="editCliente('${c.id}')" title="Editar">✏️</button>
+        <button class="btn btn-sm btn-icon" onclick="delCliente('${c.id}')" title="Excluir">🗑</button>` : ''}
       </td>
     </tr>
   `;}).join('');
@@ -1986,14 +2065,14 @@ async function salvarCliente() {
   const btn = document.getElementById('btn-salvar-cliente');
   btn.disabled = true; btn.textContent = 'Salvando...';
 
-  const obj = {
+  const obj = sanitizarObjeto({
     nome,
     endereco: document.getElementById('mc-end').value.trim(),
     cnpj: document.getElementById('mc-cnpj').value.trim(),
     setor: document.getElementById('mc-setor').value.trim(),
     contato: document.getElementById('mc-contato').value.trim(),
     telefone: document.getElementById('mc-tel').value.trim(),
-  };
+  });
 
   try {
     if (editingClienteId) {
@@ -2007,7 +2086,7 @@ async function salvarCliente() {
     renderClientes();
     if (laudoState._afterClienteSave) { initNovoLaudo(); }
   } catch (err) {
-    alertBox.innerHTML = '<div class="alert alert-danger">⚠️ Erro ao salvar: ' + err.message + '</div>';
+    alertBox.innerHTML = '<div class="alert alert-danger">⚠️ ' + erroSeguro(err,'salvar') + '</div>';
   } finally {
     btn.disabled = false; btn.textContent = 'Salvar cliente';
   }
@@ -2050,16 +2129,16 @@ function renderLocais() {
     const nEqs = CACHE.equipamentos.filter(e => e.localId === l.id).length;
     return `
     <tr>
-      <td data-label="Local"><strong>${l.nome}</strong></td>
-      <td data-label="Cliente">${cl ? cl.nome : '—'}</td>
-      <td data-label="Descrição">${l.descricao || '—'}</td>
+      <td data-label="Local"><strong>${escHtml(l.nome)}</strong></td>
+      <td data-label="Cliente">${cl ? escHtml(cl.nome) : '—'}</td>
+      <td data-label="Descrição">${escHtml(l.descricao) || '—'}</td>
       <td data-label="Equipamentos">
-        <span class="badge badge-neutral" style="cursor:pointer" onclick="filtrarEquipsPorLocal('${l.id}')">${nEqs} equipamento${nEqs!==1?'s':''}</span>
+        <span class="badge badge-neutral" style="cursor:pointer" onclick="filtrarEquipsPorLocal('${escHtml(l.id)}')">${nEqs} equipamento${nEqs!==1?'s':''}</span>
       </td>
       <td style="white-space:nowrap">
-        <button class="btn btn-sm" onclick="filtrarEquipsPorLocal('${l.id}')" title="Ver equipamentos">🌡️ Equips.</button>
-        <button class="btn btn-sm btn-icon" onclick="editLocal('${l.id}')">✏️</button>
-        <button class="btn btn-sm btn-icon" onclick="delLocal('${l.id}')">🗑</button>
+        <button class="btn btn-sm" onclick="filtrarEquipsPorLocal('${escHtml(l.id)}')" title="Ver equipamentos">🌡️ Equips.</button>
+        ${isAdmin() ? '<button class="btn btn-sm btn-icon" onclick="editLocal(\''+escHtml(l.id)+'\')">✏️</button>' : ''}
+        ${isAdmin() ? '<button class="btn btn-sm btn-icon" onclick="delLocal(\''+escHtml(l.id)+'\')">🗑</button>' : ''}
       </td>
     </tr>`;
   }).join('');
@@ -2127,7 +2206,7 @@ async function salvarLocal() {
     populateFiltroClienteLocais();
     renderLocais();
   } catch(err) {
-    alertBox.innerHTML = '<div class="alert alert-danger">⚠️ Erro: '+err.message+'</div>';
+    alertBox.innerHTML = '<div class="alert alert-danger">⚠️ ' + erroSeguro(err,'salvar') + '</div>';
   } finally {
     btn.disabled = false; btn.textContent = 'Salvar local';
   }
@@ -2183,21 +2262,21 @@ function renderEquipamentos() {
     const cl = loc ? CACHE.clientes.find(c => c.id === loc.clienteId) : null;
     return `
       <tr>
-        <td data-label="Equipamento"><strong>${e.modelo || e.tipo}</strong><br><small style="color:var(--text-secondary)">${e.fabricante}</small></td>
-        <td data-label="Cliente">${cl ? cl.nome : '—'}</td>
-        <td data-label="Local">${loc ? loc.nome : '—'}</td>
-        <td data-label="Série"><code>${e.serie || '—'}</code></td>
-        <td data-label="Patrimônio">${e.patrimonio || '—'}</td>
-        <td data-label="Faixa"><span class="badge badge-info">${e.tmin}°C a ${e.tmax}°C</span></td>
+        <td data-label="Equipamento"><strong>${escHtml(e.modelo || e.tipo)}</strong><br><small style="color:var(--text-secondary)">${escHtml(e.fabricante)}</small></td>
+        <td data-label="Cliente">${cl ? escHtml(cl.nome) : '—'}</td>
+        <td data-label="Local">${loc ? escHtml(loc.nome) : '—'}</td>
+        <td data-label="Série"><code>${escHtml(e.serie) || '—'}</code></td>
+        <td data-label="Patrimônio">${escHtml(e.patrimonio) || '—'}</td>
+        <td data-label="Faixa"><span class="badge badge-info">${escHtml(String(e.tmin))}°C a ${escHtml(String(e.tmax))}°C</span></td>
         <td data-label="Laudos">
           ${CACHE.laudos.filter(l => l.equipamentoId === e.id).length > 0
             ? '<span class="badge badge-ok">'+CACHE.laudos.filter(l=>l.equipamentoId===e.id).length+' laudo(s)</span>'
             : '<span class="badge badge-neutral">Sem laudos</span>'}
         </td>
         <td style="white-space:nowrap">
-          <button class="btn btn-sm btn-icon" onclick="verHistoricoEquip('${e.id}')" title="Histórico de laudos">📋</button>
-          <button class="btn btn-sm btn-icon" onclick="editEquip('${e.id}')">✏️</button>
-          <button class="btn btn-sm btn-icon" onclick="delEquip('${e.id}')">🗑</button>
+          <button class="btn btn-sm btn-icon" onclick="verHistoricoEquip('${escHtml(e.id)}')" title="Histórico de laudos">📋</button>
+          ${isAdmin() ? '<button class="btn btn-sm btn-icon" onclick="editEquip(\''+escHtml(e.id)+'\')">✏️</button>' : ''}
+          ${isAdmin() ? '<button class="btn btn-sm btn-icon" onclick="delEquip(\''+escHtml(e.id)+'\')">🗑</button>' : ''}
         </td>
       </tr>
     `;
@@ -2311,7 +2390,7 @@ async function salvarEquipamento() {
     closeModal('modal-equip');
     renderEquipamentos();
   } catch (err) {
-    alertBox.innerHTML = '<div class="alert alert-danger">⚠️ Erro ao salvar: ' + err.message + '</div>';
+    alertBox.innerHTML = '<div class="alert alert-danger">⚠️ ' + erroSeguro(err,'salvar') + '</div>';
   } finally {
     btn.disabled = false; btn.textContent = 'Salvar equipamento';
   }
@@ -2362,16 +2441,16 @@ function renderLaudos() {
     const loc = CACHE.locais.find(x => x.id === l.localId);
     return `
     <tr>
-      <td data-label="Nº"><strong>${l.numero}</strong></td>
-      <td data-label="Cliente">${l.clienteNome || '—'}</td>
-      <td data-label="Local">${loc ? loc.nome : (l.localizacao || '—')}</td>
-      <td data-label="Equipamento">${l.modelo || '—'}<br><small style="color:var(--text-secondary)">Série: ${l.serie || '—'}</small></td>
-      <td data-label="Data">${fmtData(l.dataVerif)}</td>
-      <td data-label="Faixa"><span class="badge badge-info">${l.tmin}°C a ${l.tmax}°C</span></td>
+      <td data-label="Nº"><strong>${escHtml(l.numero)}</strong></td>
+      <td data-label="Cliente">${escHtml(l.clienteNome) || '—'}</td>
+      <td data-label="Local">${loc ? escHtml(loc.nome) : escHtml(l.localizacao) || '—'}</td>
+      <td data-label="Equipamento">${escHtml(l.modelo) || '—'}<br><small style="color:var(--text-secondary)">Série: ${escHtml(l.serie) || '—'}</small></td>
+      <td data-label="Data">${escHtml(fmtData(l.dataVerif))}</td>
+      <td data-label="Faixa"><span class="badge badge-info">${escHtml(String(l.tmin))}°C a ${escHtml(String(l.tmax))}°C</span></td>
       <td data-label="Resultado">${l.aprovado ? '<span class="badge badge-ok">✓ Aprovado</span>' : '<span class="badge badge-fail">✗ Reprovado</span>'}</td>
       <td style="white-space:nowrap">
-        <button class="btn btn-sm" onclick="verLaudo('${l.id}')">👁 Ver</button>
-        <button class="btn btn-sm btn-success btn-sm" onclick="gerarPDF('${l.id}')">📄 PDF</button>
+        <button class="btn btn-sm" onclick="verLaudo('${escHtml(l.id)}')">👁 Ver</button>
+        <button class="btn btn-sm btn-success btn-sm" onclick="gerarPDF('${escHtml(l.id)}')">📄 PDF</button>
       </td>
     </tr>`;
   }).join('');
@@ -2696,7 +2775,7 @@ async function salvarModulo() {
     closeModal('modal-modulo');
     renderModulos();
   } catch (e) {
-    document.getElementById('modal-modulo-alert').innerHTML = '<div class="alert alert-danger">Erro: ' + e.message + '</div>';
+    document.getElementById('modal-modulo-alert').innerHTML = '<div class="alert alert-danger">' + erroSeguro(e,'modulo') + '</div>';
   }
 }
 
@@ -2726,7 +2805,7 @@ function onSelectModulo(id) {
   const m = CACHE.modulos.find(x => x.id === id);
   if (!m) return;
   prev.classList.remove('hidden');
-  prev.innerHTML = `<strong>${m.marca} ${m.modelo}</strong><br>
+  prev.innerHTML = `<strong>${escHtml(m.marca)} ${escHtml(m.modelo)}</strong><br>
     Série: <code>${m.serie}</code> &nbsp;|&nbsp; 
     Certificado: ${m.cert || '—'} &nbsp;|&nbsp;
     Validade: ${m.validade || '—'}`;
@@ -2764,7 +2843,7 @@ function onSelectEquipamento(id) {
   if (!e) return;
   const loc = CACHE.locais.find(l => l.id === e.localId);
   prev.classList.remove('hidden');
-  prev.innerHTML = `<strong>${e.fabricante || ''} ${e.modelo || e.tipo}</strong><br>
+  prev.innerHTML = `<strong>${escHtml(e.fabricante || '')} ${escHtml(e.modelo || e.tipo)}</strong><br>
     Série: <code>${e.serie || '—'}</code> &nbsp;|&nbsp;
     Patrimônio: ${e.patrimonio || '—'} &nbsp;|&nbsp;
     Faixa: ${e.tmin}°C a ${e.tmax}°C
@@ -2800,12 +2879,12 @@ function renderTecnicos() {
   }
   tbody.innerHTML = CACHE.tecnicos.map(t => `
     <tr>
-      <td data-label="Nome"><strong>${t.nome}</strong></td>
-      <td data-label="Cargo">${t.cargo || '—'}</td>
-      <td data-label="CREA">${t.crea || '—'}</td>
+      <td data-label="Nome"><strong>${escHtml(t.nome)}</strong></td>
+      <td data-label="Cargo">${escHtml(t.cargo) || '—'}</td>
+      <td data-label="CREA">${escHtml(t.crea) || '—'}</td>
       <td style="white-space:nowrap">
-        <button class="btn btn-sm btn-icon" onclick="editTecnico('${t.id}')">✏️</button>
-        <button class="btn btn-sm btn-icon" onclick="delTecnico('${t.id}')">🗑</button>
+        <button class="btn btn-sm btn-icon" onclick="editTecnico('${escHtml(t.id)}')">✏️</button>
+        <button class="btn btn-sm btn-icon" onclick="delTecnico('${escHtml(t.id)}')">🗑</button>
       </td>
     </tr>`).join('');
 }
@@ -2848,7 +2927,7 @@ async function salvarTecnico() {
     closeModal('modal-tecnico');
     renderTecnicos();
   } catch(err) {
-    alertBox.innerHTML = '<div class="alert alert-danger">⚠️ ' + err.message + '</div>';
+    alertBox.innerHTML = '<div class="alert alert-danger">⚠️ ' + erroSeguro(err,'salvar') + '</div>';
   } finally { btn.disabled = false; btn.textContent = 'Salvar técnico'; }
 }
 async function delTecnico(id) {
@@ -2871,11 +2950,11 @@ function renderUsuarios() {
     }
     tbody.innerHTML = CACHE.usuarios.map(u => `
       <tr>
-        <td data-label="Nome / E-mail"><strong>${u.nome || u.email}</strong><br><small style="color:var(--text-secondary)">${u.email}</small></td>
+        <td data-label="Nome / E-mail"><strong>${escHtml(u.nome || u.email)}</strong><br><small style="color:var(--text-secondary)">${escHtml(u.email)}</small></td>
         <td data-label="Perfil"><span class="badge ${u.perfil==='admin'?'badge-info':'badge-neutral'}">${u.perfil==='admin'?'Admin':'Técnico'}</span></td>
-        <td data-label="Técnico">${u.tecnicoNome || '—'}</td>
+        <td data-label="Técnico">${escHtml(u.tecnicoNome) || '—'}</td>
         <td style="white-space:nowrap">
-          <button class="btn btn-sm btn-icon" onclick="editUsuario('${u.id}')">✏️</button>
+          <button class="btn btn-sm btn-icon" onclick="editUsuario('${escHtml(u.id)}')">✏️</button>
         </td>
       </tr>`).join('');
   });
@@ -2943,10 +3022,7 @@ async function salvarUsuario() {
     }
     await renderUsuarios();
   } catch(err) {
-    let msg = err.message;
-    if (err.code === 'auth/email-already-in-use') msg = 'Este e-mail já está cadastrado.';
-    if (err.code === 'auth/weak-password') msg = 'Senha muito fraca (mín. 6 caracteres).';
-    alertBox.innerHTML = '<div class="alert alert-danger">⚠️ ' + msg + '</div>';
+    alertBox.innerHTML = '<div class="alert alert-danger">⚠️ ' + erroSeguro(err, 'salvarUsuario') + '</div>';
   } finally { btn.disabled=false; btn.textContent='Salvar usuário'; }
 }
 
@@ -3187,7 +3263,7 @@ async function salvarESolicitar() {
     await loadLaudos();
     navigate('laudos');
   } catch (err) {
-    alert('⚠️ Erro ao salvar laudo: ' + err.message);
+    alert('⚠️ ' + erroSeguro(err,'laudo'));
   } finally {
     btn.disabled = false; btn.textContent = '💾 Salvar e Gerar PDF';
   }
@@ -3463,7 +3539,7 @@ async function salvarEdicaoLaudo() {
     }
   } catch(e) {
     console.error('Erro ao salvar edição:', e);
-    alert('Erro ao salvar: ' + e.message);
+    alert(erroSeguro(e,'edicao'));
   } finally {
     btn.disabled = false; btn.textContent = '💾 Salvar alterações';
   }
@@ -4150,7 +4226,165 @@ function fmtData(d) {
   return d;
 }
 
-function escHtml(s) { return (s||'').replace(/'/g,"\\'").replace(/"/g,'&quot;'); }
+// ═══════════════════════════════════════════════════════════
+// SEGURANÇA — Sanitização, Validação, Brute Force, Logs
+// ═══════════════════════════════════════════════════════════
+
+// ── Sanitização XSS completa (substitui escHtml antigo) ──
+function escHtml(s) {
+  if (s == null) return '';
+  return String(s)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#x27;')
+    .replace(/\//g, '&#x2F;')
+    .replace(/`/g, '&#x60;');
+}
+
+// ── Sanitização de texto livre (remove tags HTML) ──
+function sanitizeText(s, maxLen = 500) {
+  if (s == null) return '';
+  return String(s)
+    .replace(/<[^>]*>/g, '')           // remove tags HTML
+    .replace(/javascript:/gi, '')       // remove javascript:
+    .replace(/on\w+\s*=/gi, '')         // remove event handlers inline
+    .trim()
+    .slice(0, maxLen);
+}
+
+// ── Validação de e-mail ──
+function isValidEmail(email) {
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+}
+
+// ── Erro seguro — nunca expõe detalhes internos ao usuário ──
+function erroSeguro(err, contexto) {
+  // Log interno para debug
+  console.error('[CALMED+ ERRO]', contexto, err);
+  // Mapa de erros Firebase conhecidos → mensagens amigáveis
+  const map = {
+    'auth/user-not-found':       'E-mail ou senha incorretos.',
+    'auth/wrong-password':       'E-mail ou senha incorretos.',
+    'auth/invalid-credential':   'E-mail ou senha incorretos.',
+    'auth/too-many-requests':    'Muitas tentativas. Aguarde alguns minutos.',
+    'auth/network-request-failed': 'Erro de conexão. Verifique sua internet.',
+    'auth/email-already-in-use': 'Este e-mail já está cadastrado.',
+    'auth/weak-password':        'Senha deve ter pelo menos 6 caracteres.',
+    'permission-denied':         'Você não tem permissão para esta ação.',
+    'unavailable':               'Serviço temporariamente indisponível.',
+  };
+  const code = err?.code || '';
+  for (const [key, msg] of Object.entries(map)) {
+    if (code.includes(key) || (err?.message||'').includes(key)) return msg;
+  }
+  // Erro genérico — não expõe stack trace
+  return 'Ocorreu um erro. Tente novamente.';
+}
+
+// ── Brute Force — limite de tentativas de login ──
+const _loginAttempts = { count: 0, blockedUntil: 0 };
+const MAX_LOGIN_ATTEMPTS = 5;
+const BLOCK_DURATION_MS  = 5 * 60 * 1000; // 5 minutos
+
+function loginBloqueado() {
+  if (_loginAttempts.blockedUntil && Date.now() < _loginAttempts.blockedUntil) {
+    const restante = Math.ceil((_loginAttempts.blockedUntil - Date.now()) / 1000 / 60);
+    return `Muitas tentativas incorretas. Aguarde ${restante} minuto(s).`;
+  }
+  if (_loginAttempts.blockedUntil && Date.now() >= _loginAttempts.blockedUntil) {
+    _loginAttempts.count = 0;
+    _loginAttempts.blockedUntil = 0;
+  }
+  return null;
+}
+
+function registrarFalhaLogin() {
+  _loginAttempts.count++;
+  secLog('login_falha', { tentativa: _loginAttempts.count });
+  if (_loginAttempts.count >= MAX_LOGIN_ATTEMPTS) {
+    _loginAttempts.blockedUntil = Date.now() + BLOCK_DURATION_MS;
+    secLog('login_bloqueado', { ate: new Date(_loginAttempts.blockedUntil).toISOString() });
+  }
+}
+
+function registrarLoginSucesso() {
+  _loginAttempts.count = 0;
+  _loginAttempts.blockedUntil = 0;
+  secLog('login_sucesso', {});
+}
+
+// ── Log de segurança (sem dados sensíveis) ──
+function secLog(evento, dados) {
+  const entry = {
+    evento,
+    ts: new Date().toISOString(),
+    usuario: auth?.currentUser?.email || 'anonimo',
+    ...dados
+  };
+  // Nunca loga senhas, tokens ou dados sensíveis
+  console.info('[SEC]', JSON.stringify(entry));
+}
+
+// ── Validação de campos antes de salvar ──
+const LIMITES = {
+  nome:       { max: 200, label: 'Nome' },
+  endereco:   { max: 300, label: 'Endereço' },
+  cnpj:       { max: 20,  label: 'CNPJ' },
+  contato:    { max: 100, label: 'Contato' },
+  telefone:   { max: 20,  label: 'Telefone' },
+  descricao:  { max: 500, label: 'Descrição' },
+  fabricante: { max: 150, label: 'Fabricante' },
+  modelo:     { max: 150, label: 'Modelo' },
+  serie:      { max: 100, label: 'Nº de Série' },
+  patrimonio: { max: 100, label: 'Patrimônio' },
+  marca:      { max: 150, label: 'Marca' },
+  cert:       { max: 100, label: 'Certificado' },
+  emissor:    { max: 150, label: 'Emissor' },
+  cargo:      { max: 100, label: 'Cargo' },
+  crea:       { max: 50,  label: 'CREA' },
+  supervisor: { max: 200, label: 'Supervisor' },
+  respTecnico:{ max: 200, label: 'Responsável técnico' },
+  duracao:    { max: 50,  label: 'Duração' },
+  observacao: { max: 1000,label: 'Observação' },
+  anexoNome:  { max: 200, label: 'Nome do documento' },
+};
+
+function validarCampo(valor, campo) {
+  const cfg = LIMITES[campo];
+  if (!cfg) return null;
+  if (valor && valor.length > cfg.max) {
+    return `${cfg.label} deve ter no máximo ${cfg.max} caracteres.`;
+  }
+  return null;
+}
+
+// Sanitiza um objeto inteiro antes de salvar no Firestore
+function sanitizarObjeto(obj) {
+  const resultado = {};
+  for (const [k, v] of Object.entries(obj)) {
+    if (typeof v === 'string') {
+      resultado[k] = sanitizeText(v, LIMITES[k]?.max || 500);
+    } else {
+      resultado[k] = v;
+    }
+  }
+  return resultado;
+}
+
+// ── Upload seguro — validação de tipo e tamanho ──
+const TIPOS_PERMITIDOS = ['image/png', 'image/jpeg', 'image/jpg', 'application/pdf'];
+const EXTENSOES_BLOQUEADAS = /\.(exe|bat|cmd|js|mjs|sh|scr|msi|apk|vbs|ps1|dll|com|pif)$/i;
+const MAX_UPLOAD_MB = 5;
+
+function validarArquivoAnexo(file) {
+  if (!file) return 'Nenhum arquivo selecionado.';
+  if (EXTENSOES_BLOQUEADAS.test(file.name)) return 'Tipo de arquivo não permitido.';
+  if (!TIPOS_PERMITIDOS.includes(file.type)) return 'Apenas PDF, PNG e JPG são aceitos.';
+  if (file.size > MAX_UPLOAD_MB * 1024 * 1024) return `Arquivo muito grande. Limite: ${MAX_UPLOAD_MB}MB.`;
+  return null; // ok
+}
 
 function closeModal(id) { document.getElementById(id).classList.add('hidden'); }
 
